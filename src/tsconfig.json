@@ -4,13 +4,22 @@
     "declaration": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "lib": ["es6", "dom"],
-    "mapRoot": "./",
+    "lib": [
+      "es6",
+      "dom"
+    ],
+    "noImplicitAny": true,
+    "mapRoot": "./src",
     "module": "es6",
     "moduleResolution": "node",
-    "outDir": "../dist/out-tsc",
+    "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "target": "es5",
+    "exclude": [
+      "../node_modules",
+      "../**/*.e2e.ts",
+      "../**/*.spec.ts"
+    ],
     "typeRoots": [
       "../node_modules/@types"
     ]
