@@ -4,11 +4,12 @@ var commonConfig = require('./webpack.common.js');
 var helpers = require('./helpers');
 
 module.exports = webpackMerge(commonConfig, {
-  devtool: 'cheap-module-eval-source-map',
+  //devtool: 'cheap-module-eval-source-map',
+  devtool: 'cheap-module-source-map',
 
   output: {
     path: helpers.root('dist'),
-    publicPath: 'http://localhost:8080/',
+    publicPath: 'http://localhost:63342/GooglePOI/dist/',
     filename: '[name].js',
     chunkFilename: '[id].chunk.js'
   },

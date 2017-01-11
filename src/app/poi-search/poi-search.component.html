@@ -1,6 +1,9 @@
 <div class="flex-container" fxLayout="row" >
   <md-input-container class="flex-item" fxFlex floatingPlaceholder="false" width="100%">
-    <input md-input placeholder="Enter your query">
+    <input md-input placeholder="Search for...">
   </md-input-container>
+  <button md-button md-mini-fab color="primary" (click)="search()">
+    <md-icon class="flex-item" fxFlexAlign="center">search</md-icon>
+  </button>
 </div>
 
