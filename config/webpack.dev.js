@@ -5,11 +5,11 @@ var helpers = require('./helpers');
 
 module.exports = webpackMerge(commonConfig, {
   //devtool: 'cheap-module-eval-source-map',
-  devtool: 'cheap-module-source-map',
+  devtool: 'source-map',
 
   output: {
     path: helpers.root('dist'),
-    publicPath: 'http://localhost:63342/GooglePOI/dist/',
+    publicPath: 'http://localhost:8080/',
     filename: '[name].js',
     chunkFilename: '[id].chunk.js'
   },
