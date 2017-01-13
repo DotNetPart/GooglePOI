@@ -5,7 +5,6 @@ import {PoiSearchService} from "../poi-search.service";
   selector: 'app-poi-search',
   templateUrl: './poi-search.component.html',
   styleUrls: ['./poi-search.component.css'],
-  providers: [PoiSearchService]
 })
 export class PoiSearchComponent implements OnInit {
 
