@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, Input} from '@angular/core';
 import {Observable, Subject} from "rxjs";
 import * as geolib from "geolib";
 import "googlemaps";
@@ -28,7 +28,8 @@ export class PoiSearchService {
 
   public isBusy: boolean = false;
   public progress: number = 0;
-  public currentResult: Observable<PlaceResult> = null;
+  public currentResult: Observable<PlaceResult[]> = null;
+
 
   constructor() {
     this.map = new Map(document.getElementById("map"));
@@ -57,13 +58,14 @@ export class PoiSearchService {
     return result;
   }
 
-  search(options?: SearchOptions): Observable<PlaceResult> {
+  search(options?: SearchOptions): Observable<PlaceResult[]> {
     options = options || {
+        storage: [],
         boundsEnumerator: new BoundsEnumerator(this.boundsArray),
-        observable: new Subject<PlaceResult>()
+        observable: new Subject<PlaceResult[]>()
       };
 
-    this.currentResult = options.observable.asObservable();
+    this.currentResult = this.currentResult || options.observable.asObservable();
 
     if (!options.boundsEnumerator || !options.boundsEnumerator.current){
       return options.observable;
@@ -74,7 +76,7 @@ export class PoiSearchService {
       type: PoiSearchService.type
     };
 
-    options.observable = options.observable || new Subject<PlaceResult>();
+    options.observable = options.observable || new Subject<PlaceResult[]>();
 
     this.googleSearch.nearbySearch(request, (res, status, pages) => this.onPlacesFound(res, status, pages, options));
     return options.observable;
@@ -88,25 +90,28 @@ export class PoiSearchService {
     }
     if (status === PlacesServiceStatus.OK) {
 
-      res.forEach(item => options.observable.next(item));
+      res.forEach(item => options.storage.push(item));
+      options.observable.next(options.storage);
 
-      if (pages.hasNextPage)``
+      if (pages.hasNextPage)
       {
         pages.nextPage();
         return;
       }
     }
 
-    this.progress = Math.floor(100 * options.boundsEnumerator.currentIndex / this.boundsArray.length);
+    //Math.floor(100 * options.boundsEnumerator.currentIndex / this.boundsArray.length)
+    this.progress = options.boundsEnumerator.currentIndex;
     if (options.boundsEnumerator.moveNext())
-      setTimeout(() => this.search(options), 2000);
+      setTimeout(() => this.search(options), Math.floor(Math.random() * (2000 - 500)) + 500);
   }
 }
 
 
 export interface SearchOptions {
+  storage: PlaceResult[];
   boundsEnumerator: BoundsEnumerator;
-  observable: Subject<PlaceResult>;
+  observable: Subject<PlaceResult[]>;
 }
 
 export class BoundsEnumerator{
@@ -121,6 +126,8 @@ export class BoundsEnumerator{
   }
 
   public moveNext(): boolean {
+    if (this.currentIndex > 100)
+      this.currentIndex = this.source.length;
 
     this.current = this.currentIndex < this.source.length
       ? this.source[this.currentIndex++] : null ;

@@ -5,11 +5,11 @@
     </app-poi-search>
   </header>
   <main>
-    <md-progress-bar mode="determinate" value="{{searchService.progress}}"></md-progress-bar>
-    <div>Progress: {{searchService.progress}} %</div>
+    <md-progress-bar mode="determinate" [value]="searchService.progress"></md-progress-bar>
+    <div>Progress: {{ searchService.progress }} %</div>
     <ul>
-      <li *ngFor="let res of searchService.currentResult | async">
-          {{ res.name }}
+      <li *ngFor="let res of (searchService.currentResult | async)">
+        {{ res.name }}
       </li>
     </ul>
   </main>
